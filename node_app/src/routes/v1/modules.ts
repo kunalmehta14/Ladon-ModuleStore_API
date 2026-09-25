@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import sql from '../db.js';
+import sql from '../../db.js';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 const moduleStoreApp = new Hono();

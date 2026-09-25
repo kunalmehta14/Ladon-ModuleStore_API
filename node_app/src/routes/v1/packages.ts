@@ -103,11 +103,16 @@ modulePackages.get('/list_packages/:module_name',
 ///////////////////////////////////////////
 // Package download mechanisim endpoints //
 //////////////////////////////////////////
-modulePackages.get('/package_access/checksum/:module_name', async (c) => {
+modulePackages.get('/package_access/checksum/:module_name', 
+    zValidator('query', z.object({
+    ver: z.string().optional()
+  })),
+  async (c) => {
   const module_name = c.req.param('module_name');
   try {
-    console.log(`${process.env.FILE_SERVER_ACCESS}/${module_name}/packages/checksum`)
-    const response = await fetch(`${process.env.FILE_SERVER_ACCESS}/${module_name}/packages/checksum`);
+    const ver = c.req.valid('query');
+    // console.log(`${process.env.FILE_SERVER_ACCESS}/${module_name}/packages/${ver['ver']}/checksum`)
+    const response = await fetch(`${process.env.FILE_SERVER_ACCESS}/${module_name}/packages/${ver['ver']}/checksum`);
     const result = await response.text();
     if (!result) return c.json({ error: 'module not found' }, 404);
     return c.json(result);
